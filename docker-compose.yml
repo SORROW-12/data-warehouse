@@ -1,0 +1,29 @@
+version: '3'
+services:
+  spark:
+    image: bitnami/spark:3.4
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      - C:/Users/26817/Desktop/2019-Oct.csv:/data/2019-Oct.csv
+      - C:/Users/26817/Desktop/data-warehouse:/warehouse
+
+  spark-worker:
+    image: bitnami/spark:3.4
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark:7077
+    volumes:
+      - C:/Users/26817/Desktop/2019-Oct.csv:/data/2019-Oct.csv
+      - C:/Users/26817/Desktop/data-warehouse:/warehouse
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=warehouse123
+      - MYSQL_DATABASE=ads_db
+    ports:
+      - "3306:3306"
